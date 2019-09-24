@@ -135,8 +135,8 @@ var generatePhoto = function (count) {
 };
 
 
-// Отрисовка фотографий
-var renderPhoto = function (photo) {
+// Отрисовка миниатюр фотографий
+var renderThumbnail = function (photo) {
   var templatePicture = document.querySelector('#picture').content;
   var picture = templatePicture.querySelector('.picture');
 
@@ -153,17 +153,67 @@ var renderPhoto = function (photo) {
 };
 
 
-// Добавления фото
-var addPhoto = function (photos) {
+// Добавления миниатюр фото
+var addThumbnail = function (photos) {
   for (var i = 0; i < photos.length; i++) {
-    var pictureItem = renderPhoto(photos[i]);
+    var pictureItem = renderThumbnail(photos[i]);
     pictures.appendChild(pictureItem);
+  }
+};
+
+
+// Отрисовка описания к фотографии
+var renderPhoto = function (photo) {
+  var img = bigPictures.querySelector('.big-picture__img img');
+  var likes = bigPictures.querySelector('.likes-count');
+  var commentCount = bigPictures.querySelector('.comments-count');
+  var comments = bigPictures.querySelector('.social__comments');
+  var description = bigPictures.querySelector('.social__caption');
+
+  img.src = photo.url;
+  likes.textContent = photo.likes;
+  commentCount.textContent = photo.comments.length;
+  description.textContent = photo.description;
+
+  // Добавляем комментарии
+  while (comments.firstChild) {
+    comments.removeChild(comments.firstChild);
+  }
+
+  for (var i = 0; i < photo.comments.length; i++) {
+    var comment = document.createElement('li');
+    comment.classList.add('social__comment');
+
+    var avatar = document.createElement('img');
+    avatar.classList.add('social__picture');
+    avatar.src = photo.comments[i].avatar;
+    avatar.alt = photo.comments[i].name;
+    avatar.width = 35;
+    avatar.height = 35;
+    comment.appendChild(avatar);
+
+    var text = document.createElement('p');
+    text.classList.add('social__text');
+    text.textContent = photo.comments[i].message;
+    comment.appendChild(text);
+
+    comments.appendChild(comment);
   }
 };
 
 
 // Начало программы
 var pictures = document.querySelector('.pictures');
+var bigPictures = document.querySelector('.big-picture');
+
+bigPictures.classList.remove('hidden');
 
 var photos = generatePhoto(25);
-addPhoto(photos);
+addThumbnail(photos);
+renderPhoto(photos[0]);
+
+var commentCount = bigPictures.querySelector('.social__comment-count');
+var commentsLoader = bigPictures.querySelector('.comments-loader');
+
+commentCount.classList.add('visually-hidden');
+commentsLoader.classList.add('visually-hidden');
