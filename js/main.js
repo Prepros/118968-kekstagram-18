@@ -210,7 +210,7 @@ bigPictures.classList.remove('hidden');
 
 var photos = generatePhoto(25);
 addThumbnail(photos);
-renderPhoto(photos[0]);
+renderPhoto(photos[randomVal(0, photos.length - 1)]);
 
 var commentCount = bigPictures.querySelector('.social__comment-count');
 var commentsLoader = bigPictures.querySelector('.comments-loader');
