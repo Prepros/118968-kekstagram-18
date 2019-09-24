@@ -180,6 +180,8 @@ var renderPhoto = function (photo) {
     comments.removeChild(comments.firstChild);
   }
 
+  var fragment = document.createDocumentFragment();
+
   for (var i = 0; i < photo.comments.length; i++) {
     var comment = document.createElement('li');
     comment.classList.add('social__comment');
@@ -197,8 +199,10 @@ var renderPhoto = function (photo) {
     text.textContent = photo.comments[i].message;
     comment.appendChild(text);
 
-    comments.appendChild(comment);
+    fragment.appendChild(comment);
   }
+
+  comments.appendChild(fragment);
 };
 
 
